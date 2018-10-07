@@ -3,6 +3,7 @@ package com.marketplaces.www.repo;
 import com.marketplaces.www.dto.SMSRequestDTO;
 
 import java.util.Queue;
+import java.util.Set;
 
 public interface SmsRepository {
 
@@ -14,5 +15,5 @@ public interface SmsRepository {
 
   void deleteMessage(String number);
 
-  Queue<SMSRequestDTO> pop(String queue);
+  Set<SMSRequestDTO> dequeue(String queue);
 }

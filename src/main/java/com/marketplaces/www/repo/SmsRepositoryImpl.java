@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
 
 import java.util.Queue;
+import java.util.Set;
 
 @Repository
 public class SmsRepositoryImpl implements SmsRepository {
@@ -47,9 +48,8 @@ public class SmsRepositoryImpl implements SmsRepository {
   }
 
   @Override
-  public Queue<SMSRequestDTO> pop(String queue) {
+  public Set<SMSRequestDTO> dequeue(String queue) {
     init();
-    return (Queue<SMSRequestDTO>) zSetOperations.rangeByScore(queue, 0, System.currentTimeMillis());
-    // zSetOperations.removeRangeByScore(queue, 0, System.currentTimeMillis());
+    return zSetOperations.rangeByScore(queue,0,-1);
   }
 }
