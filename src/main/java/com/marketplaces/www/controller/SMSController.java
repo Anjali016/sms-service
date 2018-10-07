@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 @RestController
 public class SMSController {
@@ -20,7 +21,7 @@ public class SMSController {
   }
 
   @RequestMapping("v1/sms/pop/{queue}")
-  Queue<SMSRequestDTO >pop(@PathVariable String queue){
+  Set<SMSRequestDTO> dequeue(@PathVariable String queue){
    return smsEnqueueService.dequeue(queue);
   }
 }

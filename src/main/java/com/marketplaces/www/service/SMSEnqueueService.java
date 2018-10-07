@@ -23,7 +23,7 @@ public class SMSEnqueueService {
     }
 
     private String getQueue(SMSRequestDTO smsRequestDTO) {
-        if (smsRequestDTO.getType().equalsIgnoreCase(transactionalQueue)) return transactionalQueue;
+        if (smsRequestDTO.getType().equalsIgnoreCase("transactional")) return transactionalQueue;
         else if (smsRequestDTO.getPriority().startsWith("high")) return promotionalHighQueue;
         else if (smsRequestDTO.getPriority().startsWith("medium")) return promotionalMedQueue;
         return promotionalLowQueue;

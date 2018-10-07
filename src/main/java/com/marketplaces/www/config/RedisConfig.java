@@ -14,7 +14,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
   @Bean
-  private JedisConnectionFactory jedisConnectionFactpry() {
+  JedisConnectionFactory jedisConnectionFactory() {
     JedisConnectionFactory factory = new JedisConnectionFactory();
     return factory;
   }
@@ -22,7 +22,7 @@ public class RedisConfig {
   @Bean
   public RedisTemplate<String, SMSRequestDTO> redisTemplate() {
     RedisTemplate<String, SMSRequestDTO> redisTemplate = new RedisTemplate<>();
-    redisTemplate.setConnectionFactory(jedisConnectionFactpry());
+    redisTemplate.setConnectionFactory(jedisConnectionFactory());
     redisTemplate.setKeySerializer(new StringRedisSerializer());
     redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<SMSRequestDTO>(SMSRequestDTO.class));
     return redisTemplate;
