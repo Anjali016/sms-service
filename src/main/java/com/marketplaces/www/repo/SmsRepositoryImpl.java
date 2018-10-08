@@ -6,50 +6,52 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
 
-import java.util.Queue;
 import java.util.Set;
 
 @Repository
 public class SmsRepositoryImpl implements SmsRepository {
 
-  private static final String KEY = "sms";
-  private RedisTemplate<String, SMSRequestDTO> redisTemplate;
-  // private HashOperations<String, String, SMSRequestDTO> hashOperations;
-  private ZSetOperations<String, SMSRequestDTO> zSetOperations;
+    private static final String KEY = "sms";
+    private RedisTemplate<String, SMSRequestDTO> redisTemplate;
+    // private HashOperations<String, String, SMSRequestDTO> hashOperations;
+    private ZSetOperations<String, SMSRequestDTO> zSetOperations;
 
-  private void init() {
-    zSetOperations = redisTemplate.opsForZSet();
-  }
+    private void init() {
+        zSetOperations = redisTemplate.opsForZSet();
+    }
 
-  @Autowired
-  SmsRepositoryImpl(RedisTemplate<String, SMSRequestDTO> redisTemplate) {
-    this.redisTemplate = redisTemplate;
-  }
+    @Autowired
+    SmsRepositoryImpl(RedisTemplate<String, SMSRequestDTO> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
-  @Override
-  public void storeMessage(SMSRequestDTO message, String queue) {
-    init();
-    zSetOperations.add(queue, message, System.currentTimeMillis());
-  }
+    @Override
+    public void storeMessage(SMSRequestDTO message, String queue) {
+        init();
+        zSetOperations.add(queue, message, System.currentTimeMillis());
+    }
 
-  @Override
-  public SMSRequestDTO getMessage(String number) {
-    return null;
-  }
+    @Override
+    public SMSRequestDTO getMessage(String number) {
+        return null;
+    }
 
-  @Override
-  public void updateMessage(SMSRequestDTO message) {
-    //     storeMessage(message);
-  }
+    @Override
+    public void updateMessage(SMSRequestDTO message) {
+        //     storeMessage(message);
+    }
 
-  @Override
-  public void deleteMessage(String number) {
-    // hashOperations.delete("sms", get.getNumber());
-  }
+    @Override
+    public void deleteMessage(String queue, SMSRequestDTO value) {
+        init();
+        zSetOperations.remove(queue,value);
+    }
 
-  @Override
-  public Set<SMSRequestDTO> dequeue(String queue) {
-    init();
-    return zSetOperations.rangeByScore(queue,0,-1);
-  }
+    @Override
+    public Set<SMSRequestDTO> dequeue(String queue, int limit) {
+        init();
+        Set<SMSRequestDTO> set = zSetOperations.rangeByScore(queue, 0, System.currentTimeMillis(), 0, limit);
+        set.stream().forEach(t->deleteMessage(queue,t));
+        return set;
+    }
 }

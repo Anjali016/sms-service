@@ -3,10 +3,20 @@ package com.marketplaces.www.dto;
 import java.io.Serializable;
 
 public class SMSRequestDTO implements Serializable {
+
   private String msisdn;
   private String type;
   private String message;
   private String priority;
+
+  public SMSRequestDTO(){}
+
+  public SMSRequestDTO(String msisdn, String type, String message, String priority) {
+    this.msisdn = msisdn;
+    this.type = type;
+    this.message = message;
+    this.priority = priority;
+  }
 
   public String getMsisdn() {
     return this.msisdn;

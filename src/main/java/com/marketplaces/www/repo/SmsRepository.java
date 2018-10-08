@@ -13,7 +13,7 @@ public interface SmsRepository {
 
   void updateMessage(SMSRequestDTO message);
 
-  void deleteMessage(String number);
+  void deleteMessage(String queue, SMSRequestDTO value);
 
-  Set<SMSRequestDTO> dequeue(String queue);
+  Set<SMSRequestDTO> dequeue(String queue, int limit);
 }
