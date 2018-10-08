@@ -44,14 +44,14 @@ public class SmsRepositoryImpl implements SmsRepository {
     @Override
     public void deleteMessage(String queue, SMSRequestDTO value) {
         init();
-        zSetOperations.remove(queue,value);
+        zSetOperations.remove(queue, value);
     }
 
     @Override
     public Set<SMSRequestDTO> dequeue(String queue, int limit) {
         init();
         Set<SMSRequestDTO> set = zSetOperations.rangeByScore(queue, 0, System.currentTimeMillis(), 0, limit);
-        set.stream().forEach(t->deleteMessage(queue,t));
+//        set.forEach(t -> deleteMessage(queue, t));
         return set;
     }
 }

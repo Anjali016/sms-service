@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAutoConfiguration
 public class HealthController {
 
-  private boolean status = true;
+  public boolean status = true;
 
   @RequestMapping("/v1/health/status")
-  public HttpStatus status() {
+  public HttpStatus health() {
     if (status) return HttpStatus.OK;
     else return HttpStatus.SERVICE_UNAVAILABLE;
   }
@@ -27,5 +27,9 @@ public class HealthController {
   public HttpStatus markDown() {
     status = false;
     return HttpStatus.OK;
+  }
+
+  public boolean getStatus() {
+    return status;
   }
 }
