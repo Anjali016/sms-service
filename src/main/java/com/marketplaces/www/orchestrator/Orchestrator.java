@@ -35,21 +35,21 @@ public class Orchestrator implements Runnable {
     @Override
     public void run() {
         //while (healthController.status) {
-            try {
-                System.out.println("Started consuming sms batch!");
-                dequeue(QueueNames.TRANSACTIONAL.toString(), 4);
-                dequeue(QueueNames.PROMOTIONAL_HIGH.toString(), 3);
-                dequeue(QueueNames.PROMOTIONAL_MED.toString(), 2);
-                dequeue(QueueNames.PROMOTIONAL_LOW.toString(), 1);
+        try {
+            System.out.println("Started consuming sms batch!");
+            dequeue(QueueNames.TRANSACTIONAL.toString(), 4);
+            dequeue(QueueNames.PROMOTIONAL_HIGH.toString(), 3);
+            dequeue(QueueNames.PROMOTIONAL_MED.toString(), 2);
+            dequeue(QueueNames.PROMOTIONAL_LOW.toString(), 1);
+            Thread.sleep(2000);
+            while (!healthController.status) {
+                System.out.println("Service is marked down. Not consuming sms batch");
                 Thread.sleep(2000);
-                while (!healthController.status) {
-                    System.out.println("Service is marked down. Not consuming sms batch");
-                    Thread.sleep(2000);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
-      //  }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //  }
     }
 
     private void dequeue(String queue, int limit) {
@@ -58,4 +58,5 @@ public class Orchestrator implements Runnable {
             dequeueSet.forEach(t -> executorService.submit(new SendSMSTask(t)));
     }
 }
+
 
