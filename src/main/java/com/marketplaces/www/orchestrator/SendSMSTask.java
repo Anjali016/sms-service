@@ -1,30 +1,22 @@
 package com.marketplaces.www.orchestrator;
 
 import com.marketplaces.www.dto.SMSRequestDTO;
-import com.marketplaces.www.utils.HttpUtility;
-
-import java.io.IOException;
+import com.marketplaces.www.service.MSG91Sender;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SendSMSTask implements Runnable {
 
-    private SMSRequestDTO smsRequestDTO;
+  @Autowired MSG91Sender msg91Sender;
+  private SMSRequestDTO smsRequestDTO;
 
-    private HttpUtility httpUtility;
+  SendSMSTask(SMSRequestDTO smsRequestDTO) {
+    this.smsRequestDTO = smsRequestDTO;
+  }
 
-    SendSMSTask(SMSRequestDTO smsRequestDTO) {
-        this.smsRequestDTO = smsRequestDTO;
-    }
-
-    @Override
-    public void run() {
-        System.out.println("Sms send task invoked!");
-        try {
-            httpUtility.sendRequest("http://api.msg91.com/api/v2/sendsms?country=91",smsRequestDTO);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //System.out.println(smsRequestDTO.getMessage());
-    }
-
-
+  @Override
+  public void run() {
+    System.out.println("Sms send task invoked!");
+    String messageId = msg91Sender.sendSms(smsRequestDTO);
+    System.out.println("messageId : " + messageId);
+  }
 }

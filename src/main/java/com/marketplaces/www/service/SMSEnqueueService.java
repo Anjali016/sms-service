@@ -4,11 +4,8 @@ import com.marketplaces.www.dto.SMSRequestDTO;
 import com.marketplaces.www.enums.Priorities;
 import com.marketplaces.www.enums.QueueNames;
 import com.marketplaces.www.repo.SmsRepository;
-import com.marketplaces.www.utils.HttpUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Service
 public class SMSEnqueueService {

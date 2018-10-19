@@ -23,9 +23,6 @@ public class Orchestrator implements Runnable {
     @Autowired
     SMSDequeueService smsDequeueService;
 
-    Orchestrator() {
-    }
-
     @PostConstruct
     public void init() {
         Thread thread = new Thread(this);
@@ -34,7 +31,7 @@ public class Orchestrator implements Runnable {
 
     @Override
     public void run() {
-        //while (healthController.status) {
+        while (healthController.status) {
         try {
             System.out.println("Started consuming sms batch!");
             dequeue(QueueNames.TRANSACTIONAL.toString(), 4);
@@ -49,7 +46,7 @@ public class Orchestrator implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //  }
+          }
     }
 
     private void dequeue(String queue, int limit) {
